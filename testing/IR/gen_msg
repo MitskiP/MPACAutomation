@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# 0 - AUTO
+# 2 - DRY
+# 3 - COLD
+# 4 - HEAT
+# 6 - FAN
+actualmode=2
+
+# Bit     Value    Description
+# =======================================
+# 0       8        Always "1"        
+# 1       4        Timer OFF enabled
+# 2       2        Timer ON enabled
+# 3       1        Current State. 1 = On, 0 = Off
+power=0001
+
+# temperature. in celsius.
+celsius=96
+
+# 3    Fan 1/5
+# 4    Fan 2/5
+# 5    Fan 3/5
+# 6    Fan 4/5
+# 7    Fan 5/5
+# A    Automatic
+# B    Silent
+fan=a
+
+# 0    Swing disabled
+# F    Swing enabled
+swing=0
+
+# timer, check page
+timers="00 00 00"
+
+# 00 or 01 powerful for 20mins
+pwfl=00
+
+
+
+####################
+
+toHex() {
+	printf '%x' "$((2#$1))"
+}
+
+mode="${actualmode}`toHex "$power"`"
+
+temp="`bc <<< "obase=16; ibase=10; $celsius*2" | sed 's/\..*//'`"
+temp="`printf "%2s" "$temp" | tr ' ' '0'`"
+
+fan=${fan}${swing}
+
+
+###################
+
+header="11 da 27 00"
+msgid="00"
+data="$header $msgid $mode $temp 00 $fan 00 $timers $pwfl 00 c0 00 00"
+
+
+echo $data
+echo
+./back $data
+
+

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+
+skey='AAAAJQy1qGI:APA91bGmWrv7YrREuyPrw55Py-5nbTIxfq19nhS9EBXE7AMGWZYGGUgmMRrn4OWRawhJgBt7497e97M3xr2TubaVkvrcxil9WGG0vUKxR4RzHxc_y2UgwE_rOHuFdqGTGy_epyjq--cY'
+
+curl -i -H 'Content-type: application/json' -H "Authorization: key=$skey" -XPOST https://fcm.googleapis.com/fcm/send -d '{
+  "to": "/topics/comm",
+  "data": {
+    "key1" : "curl",
+    "key2" : "OFF",
+  }
+}'
+
+
+exit
+
+  "registration_ids":["fj8_PCblTvQ:APA91bGIJe7rS8m1u0KQT8g77Gplw2ajhiep9lKlmaVNi4EnmSMrXs_PpM-4nT76IsXi2rEjQrpsEGoEJVWIsPHFksYJiorD6MZAZZgpx6srhvOHfCREMeRrwWRqpb2YxZyoY2NFkR0R", "fkK4ONH3gN8:APA91bGUcHFiiKw2mfSsyzuEvbjS0L3o00DNrXwXAsyC0YyJGRm82hn8-6yUhX_Cva0VvvsyEkQ3Yio1cv3m2QEEfDEu6f31ve16hnXqzw4lQidC8Z73fLiMrWmXuj5UmVKs1b5lRBv7"],
+
+
+
+
+  "registration_ids":["registration_ids", "of the", "target", "devices as array"],
+  "notification": {
+      "title":"Title of your notification",
+      "body":"content of your notification"
+  },
+{
+    "to": "/topics/my_topic",
+    "data": {
+        "my_custom_key": "my_custom_value",
+        "my_custom_key2": true
+     }
+}

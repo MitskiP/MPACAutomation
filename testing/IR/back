@@ -1,0 +1,49 @@
+#!/bin/bash
+
+checksum() {
+	local upper="`tr '[:lower:]' '[:upper:]' <<< "$*" | sed 's/ /+/g'`"
+	echo "obase=16; ibase=16; $upper" | bc | rev | cut -c -2 | rev
+}
+toHex() {
+	for i in $@; do
+		len="`wc -L <<< "$i"`"
+		if [ $len == 8 ]; then
+			printf '%2x' "$((2#$i))" | tr ' ' '0'
+		else
+			printf '%s' "$i"
+		fi
+		printf " "
+	done | sed 's/ $//'
+}
+toRevBinary() {
+	for i in $@; do
+		binary=$(echo "obase=2; ibase=16; $i" | bc )
+		printf "%8s" $binary | tr ' ' '0' | rev
+		printf " "
+	done | sed 's/ $//'
+}
+toIrRaw() {
+	x="`echo "$*" | sed -e 's/ //g' | sed 's/.\{1\}/& /g'`"
+
+	echo -n '3397 1725 398 '
+	for i in $x; do
+		[ $i == 0 ] && echo -n '451 398 ' || echo -n '1300 398 '
+	done
+	echo
+}
+
+# convert any binary data to hex first
+input="`toHex "$*"`"
+echo "hex: $input"
+# calc last checksum val
+cksum="`checksum "$input"`"
+echo "checksum: $cksum"
+
+upper="`tr '[:lower:]' '[:upper:]' <<< "$input $cksum"`"
+
+data="`toRevBinary $upper`"
+echo $data
+echo
+
+toIrRaw $data
+echo
